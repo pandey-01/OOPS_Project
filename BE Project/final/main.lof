@@ -1,0 +1,30 @@
+\babel@toc {english}{}\relax 
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Layered System Architecture of the Resource-Aware Collaborative Cloud IDE}}{16}{figure.caption.3}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Use Case Diagram of the Resource-Aware Collaborative Cloud IDE}}{17}{figure.caption.4}%
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Class Diagram: Real-Time Collaborative Engine}}{19}{figure.caption.5}%
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Class Diagram: Workspace Container Provisioning \& Runtime}}{20}{figure.caption.6}%
+\contentsline {figure}{\numberline {5.5}{\ignorespaces Class Diagram: Heuristic Optimization \& Lifecycle Engine}}{21}{figure.caption.7}%
+\contentsline {figure}{\numberline {5.6}{\ignorespaces Sequence Diagram, Part A: Room Join, Repository Analysis, and Collaborative Editing}}{22}{figure.caption.8}%
+\contentsline {figure}{\numberline {5.7}{\ignorespaces Sequence Diagram, Part B: Execution, Scaling, Log Streaming, and Teardown}}{24}{figure.caption.9}%
+\contentsline {figure}{\numberline {5.8}{\ignorespaces State Machine Diagram: Workspace Pod Lifecycle}}{25}{figure.caption.10}%
+\contentsline {figure}{\numberline {5.9}{\ignorespaces Activity Diagram: Resource Allocation and Execution Flow}}{27}{figure.caption.11}%
+\contentsline {figure}{\numberline {5.10}{\ignorespaces Component Diagram (Provided and Required Interfaces)}}{29}{figure.caption.12}%
+\contentsline {figure}{\numberline {5.11}{\ignorespaces Deployment Diagram: Physical and Virtual Topologies}}{30}{figure.caption.13}%
+\contentsline {figure}{\numberline {5.12}{\ignorespaces Object Diagram: Runtime Instance Snapshot}}{31}{figure.caption.14}%
+\contentsline {figure}{\numberline {5.13}{\ignorespaces Collaboration (Communication) Diagram}}{33}{figure.caption.15}%
+\contentsline {figure}{\numberline {5.14}{\ignorespaces Package Diagram: Module Dependencies}}{34}{figure.caption.16}%
+\contentsline {figure}{\numberline {5.15}{\ignorespaces Composite Structure Diagram: Internal Workspace Session}}{35}{figure.caption.17}%
+\contentsline {figure}{\numberline {5.16}{\ignorespaces CollabIDE Authentication Interface: Clean Login/OAuth and Live Session Preview}}{37}{figure.caption.18}%
+\contentsline {figure}{\numberline {5.17}{\ignorespaces Interactive Microservice Topologies: Node.js and Python Runtime Sizing Canvas}}{37}{figure.caption.19}%
+\contentsline {figure}{\numberline {5.18}{\ignorespaces Real-Time Resource Optimizer Dashboard: Live Power Curve and Policy Evaluation}}{38}{figure.caption.20}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {6.1}{\ignorespaces Detailed 10-Month Project Gantt Chart (Stage-I and Stage-II Schedule)}}{40}{figure.caption.23}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }

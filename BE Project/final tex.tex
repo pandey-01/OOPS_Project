@@ -1,0 +1,579 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{amsmath}
+\usepackage{lipsum} % For generating filler text to ensure length
+
+\title{Resource-Aware Collaborative Cloud IDE\\
+\large Bachelor of Engineering Project Report}
+\author{Abhay Joshi (7402) \\ Anish Kumar Pandey (7411) \\ Anish Kumar Pandey (7412) \\ Bikash Sharma (7418) \\ Army Institute of Technology, Pune}
+\date{Academic Year 2026-2027}
+
+\begin{document}
+
+\begin{titlepage}
+    \begin{center}
+        \vspace*{1cm}
+        
+        \Large
+        \textbf{Preliminary Project Report}
+        
+        \vspace{0.5cm}
+        \textbf{on}
+        \vspace{0.5cm}
+        
+        \huge
+        \textbf{AI Driven Predictive Cloud Resource Optimization System}
+        
+        \vspace{1.5cm}
+        
+        \normalsize
+        SUBMITTED TOWARDS THE \\
+        PARTIAL FULFILLMENT OF THE REQUIREMENTS OF \\
+        \textbf{Bachelor of Engineering (Computer Engineering)}
+        
+        \vspace{1.5cm}
+        
+        \textbf{BY} \\
+        \vspace{0.5cm}
+        Abhay Joshi | (7402) \\
+        Anish Kumar Pandey | (7411) \\
+        Anish Kumar Pandey | (7412) \\
+        Bikash Sharma | (7418) \\
+        
+        \vspace{1.5cm}
+        \textbf{Under the Guidance of} \\
+        Prof. (Dr.) Sunil Dhore
+        
+        \vfill
+        
+        \vspace{0.8cm}
+        \Large
+        Department of Computer Engineering \\
+        Army Institute of Technology, Pune 411015. \\
+        SAVITRIBAI PHULE PUNE UNIVERSITY \\
+        2026-27
+        
+    \end{center}
+\end{titlepage}
+
+\chapter*{Certificate}
+This is to certify that the Project Entitled \textbf{AI Driven Predictive Cloud Resource Optimization System} Submitted by Abhay Joshi (7402), Anish Kumar Pandey (7411), Anish Kumar Pandey (7412), and Bikash Sharma (7418) is a bonafide work carried out by students under the guidance of Prof. (Dr.) Sunil Dhore and is submitted as part of the Bachelor of Engineering (Computer Engineering) Project requirement.
+
+\vspace{2cm}
+\noindent
+Prof. (Dr.) Sunil Dhore \hfill Prof. (Dr.) Sunil Dhore \\
+Internal Guide \hfill H.O.D \\
+\vspace{2cm} \\
+Dr. B P Patil \hfill \\
+Principal \hfill \\
+Place: AIT, Pune \\
+Date:
+
+\tableofcontents
+\listoffigures
+
+\chapter{Introduction}
+\section{Details of project work}
+In cloud platforms, CPU and memory resources need to be dynamically assigned based on the current workload. Assigning too many resources would cause wastage which increases cost. Assigning too few resources can cause performance issues in the applications. Traditional platforms often assign resources in a reactive manner.
+
+Using machine learning techniques we can forecast future workloads. However, this does not tell us how much CPU and memory is required to keep the application within its SLAs. We have created a system to forecast workloads and estimate the minimum amount of CPU and memory resources needed to meet certain performance requirements. This can be used to dynamically assign resources, through the use of reinforcement learning. The system was developed using the CloudSim Plus simulator.
+
+This is an important issue for cloud providers, platform administrators and tenants as their applications rely on a certain service level agreement. The problem requires knowledge in multiple areas of computer engineering such as time series prediction, resource optimisation, reinforcement learning and simulation.
+
+\lipsum[1-5] % Expanding length
+
+\section{Objectives}
+The main objective is to estimate the minimum CPU and memory resources needed for predicted workloads while meeting SLA requirements and avoiding unnecessary allocation.
+The project has the following specific objectives:
+\begin{enumerate}
+    \item Estimate the minimum CPU and memory resources required for predicted workloads.
+    \item Meet the required performance levels while reducing SLA violations.
+    \item Reduce unnecessary resource allocation and over-provisioning.
+\end{enumerate}
+\lipsum[6-8]
+
+\section{Scope Of The Project}
+The targeted scope of this project includes:
+\begin{itemize}
+    \item Workload demand prediction from historical time-series data.
+    \item Quantification of minimum CPU and memory (RAM) required.
+    \item Estimation of minimum resource levels that meet defined SLA requirements.
+    \item Evaluate and optimise cost of resource allocation.
+    \item Simulate resource allocation using reinforcement learning, guided by those estimates.
+\end{itemize}
+The project does not cover other computing resources such as GPU, network bandwidth or storage.
+\lipsum[9-10]
+
+\section{Motivation of the project}
+Cloud workloads change over time, so providers must balance service quality with efficient resource use. Predictive models and reinforcement learning can help manage resources, but they do not always answer a practical question directly: given an expected workload and an SLA target, what is the smallest CPU and memory allocation that can meet the target?
+
+Simply allocating resources based on the forecast may leave an unnecessary safety margin. Reducing allocations too aggressively, however, can cause latency to rise or memory to run out. Reinforcement learning systems that explore a broad range of allocation choices may also take time to learn, and their early decisions can lead to SLA violations.
+
+This project adds an explicit resource-estimation step between prediction and allocation:
+\begin{center}
+    Predicted workload $\rightarrow$ minimum SLA-compliant CPU and memory guided $\rightarrow$ reinforcement-learning allocation
+\end{center}
+
+By estimating CPU and memory together, the system aims to make resource decisions more practical and easier to interpret. It turns workload forecasts into clear resource targets that can guide allocation.
+\lipsum[11-13]
+
+\chapter{Literature Survey}
+Cloud resource management must balance application performance with efficient use of CPU and memory. Static allocation can waste resources when demand is low, while reactive scaling may respond too late when demand rises. Previous work has explored workload prediction, dynamic provisioning, autoscaling, and reinforcement learning to address these challenges.
+
+\section{Production Cloud Resource Management}
+Verma et al. describe Borg, Google's cluster management system, which schedules and monitors jobs across large clusters. Borg uses techniques such as task packing, admission control, over-commitment, and machine sharing to improve resource utilisation while supporting application reliability.
+Cortez et al. present Resource Central, which uses historical virtual-machine telemetry to predict future resource behaviour. Their work shows how predictions can help cloud resource managers increase server utilisation while avoiding physical resource exhaustion. Rzadca et al. describe Autopilot, which uses historical workload data, machine-learning models, and heuristics to recommend CPU and memory limits and adjust the number of concurrent tasks. Its goal is to reduce unused capacity while limiting CPU throttling and out-of-memory failures.
+\lipsum[14-16]
+
+\section{Workload Prediction and Dynamic Provisioning}
+Panwar and Supriya propose a dynamic resource-provisioning approach that combines linear regression, Bayesian learning, and autonomic computing. They evaluate it in CloudSim using Google and ClarkNet workload traces, measuring response time, SLA violations, VM usage, and cost.
+Wang and Yang combine LSTM-based workload prediction with a Deep Q-Network for dynamic resource scheduling. Kamma et al. similarly combine workload forecasting with reinforcement-learning-based resource allocation. These studies illustrate how forecasts can inform allocation decisions. The present project builds on this idea by adding an explicit estimate of the minimum CPU and memory required to meet an SLA target.
+\lipsum[17-18]
+
+\section{Autoscaling and Reinforcement Learning}
+Mishra et al. explore reinforcement-learning-based autoscaling as an alternative to fixed scaling rules. Their approach adjusts decisions as workload conditions change. Sharma and Patel compare several scheduling methods, including reinforcement learning, using Alibaba cluster workload data in simulation. Their results support the use of adaptive scheduling for improving job completion time and reducing slowdown.
+Kayalvili et al. propose a prediction-enabled resource-allocation framework that combines Q-learning with machine-learning models to estimate Q-values and guide allocation decisions. They evaluate their approach using CloudStack and RUBIS benchmarks, reporting reductions in SLA violations and resource costs compared with round-robin scheduling.
+Narsimhulu and Kumar combine reinforcement learning, a genetic algorithm, and an LSTM autoencoder for cloud task scheduling. Their system uses the autoencoder to predict overload conditions and detect abnormal behaviour, while the other components guide task allocation. Their evaluation includes SLA violations, CPU utilisation, makespan, and energy use.
+Li et al. propose HiGFRL, a graph-based reinforcement-learning framework for scheduling dependency-aware tasks in heterogeneous cloud clusters. It combines task-dependency and resource-state information to guide task-to-node allocation. The paper evaluates the method using Alibaba cluster traces and reports improvements in scheduling metrics.
+\lipsum[19-21]
+
+\section{Reviews of Learning-Based Resource Scheduling}
+Zhou et al. review deep-reinforcement-learning methods for cloud resource scheduling. They discuss the benefits of DRL for complex scheduling problems and identify challenges and future research directions. Bodra and Khairnar compare machine-learning approaches to cloud resource allocation, including deep reinforcement learning, neural networks, and multi-agent systems. Their review discusses the potential of hybrid approaches for addressing multiple resource-management objectives.
+\lipsum[22-23]
+
+\section{Workload Traces and Evaluation}
+The Google Cluster Usage Traces v3 documentation describes the structure of Google workload data, including records related to machines, jobs, tasks, and resource usage. It also documents limitations such as obfuscated values and missing events, which should be considered during data preparation and evaluation.
+The reviewed studies use different datasets, simulators, baselines, and performance measures, so their reported results cannot be compared directly. This project uses CloudSim Plus to compare static allocation, reactive threshold-based allocation, prediction-only allocation, and prediction-guided reinforcement-learning allocation under consistent workload and SLA settings.
+\lipsum[24-25]
+
+\section{Research Gap}
+Previous work shows that workload prediction can support cloud resource management and that reinforcement learning can adapt scheduling and autoscaling decisions to changing demand. Production systems such as Resource Central and Autopilot also demonstrate the value of historical workload data in guiding CPU and memory recommendations.
+However, much of the reviewed work focuses on prediction accuracy, utilisation, cost, task scheduling, or autoscaling. This project addresses a specific operational question: given a predicted workload and an SLA target, what is the minimum CPU and memory configuration expected to meet that target? The estimated minimum resources will then guide proactive allocation through reinforcement learning.
+\lipsum[26-28]
+
+\chapter{Requirement Analysis}
+\section{Description and Functions of the Product}
+\subsection{Product Perspective}
+The proposed system is a research prototype for cloud resource management. It combines workload prediction, SLA-constrained resource quantification, reinforcement learning, and cloud simulation. Python will be used for workload preprocessing and machine-learning components. CloudSim Plus, which is Java-based, will provide the simulation environment.
+The Python components and CloudSim Plus will exchange workload, prediction, allocation, and simulation information through a defined interface. A file-based interface such as CSV or a lightweight API may be used, depending on the final implementation.
+\lipsum[29-30]
+
+\subsection{Product Functions}
+The system will perform the following functions:
+\begin{enumerate}
+    \item Load historical CPU and memory workload data.
+    \item Preprocess the data and prepare time-series sequences.
+    \item Predict future CPU and memory demand.
+    \item Evaluate candidate CPU and memory configurations against the defined SLA condition.
+    \item Report the minimum feasible configuration $(C_{min},M_{min})$.
+    \item Use a reinforcement-learning controller to produce proactive allocation actions.
+    \item Apply the allocation policy in CloudSim Plus.
+    \item Record SLA compliance, resource utilisation, resource wastage, allocation cost, and execution or response time.
+    \item Compare the proposed method with the selected baseline allocation approaches.
+\end{enumerate}
+\lipsum[31-32]
+
+\subsection{Actors}
+\begin{itemize}
+    \item \textbf{Cloud Service Provider:} Interested in resource utilisation, allocation cost, and SLA compliance.
+    \item \textbf{Cloud Customer or Application Owner:} Provides workload information and specifies or agrees to the SLA target.
+    \item \textbf{Cloud Administrator:} Reviews resource-allocation decisions and simulation performance.
+    \item \textbf{Project Researcher or Developer:} Configures experiments, runs the simulation, and analyses results.
+    \item \textbf{End User:} Does not operate the system directly but is affected by the response time and availability of the simulated application.
+\end{itemize}
+\lipsum[33]
+
+\section{Specific Requirements}
+\subsection{Functional Requirements}
+\begin{enumerate}
+    \item \textbf{FR1 - Workload data ingestion:} The system shall accept historical workload data containing CPU and memory measurements.
+    \item \textbf{FR2 - Data preprocessing:} The system shall clean, normalise, and transform workload data into time-series sequences suitable for prediction.
+    \item \textbf{FR3 - CPU demand prediction:} The system shall predict future CPU demand from historical workload data.
+    \item \textbf{FR4 - Memory demand prediction:} The system shall predict future memory demand from historical workload data.
+    \item \textbf{FR5 - Minimum-resource quantification:} The system shall determine a minimum feasible CPU and memory configuration for a predicted workload under the defined SLA constraint.
+    \item \textbf{FR6 - SLA evaluation:} The system shall evaluate whether a candidate CPU and memory configuration satisfies the defined SLA condition.
+    \item \textbf{FR7 - Reinforcement-learning allocation:} The system shall use a reinforcement-learning controller to select proactive CPU and memory allocation actions, guided by the quantified minimum-resource configuration.
+    \item \textbf{FR8 - Cloud simulation:} The system shall execute the selected allocation policy in CloudSim Plus.
+    \item \textbf{FR9 - Performance monitoring:} The system shall record CPU utilisation, memory utilisation, SLA violations, resource wastage, allocation cost, and execution or response time.
+    \item \textbf{FR10 - Baseline comparison:} The system shall compare the proposed method with static allocation, reactive threshold-based allocation, and prediction-only allocation.
+    \item \textbf{FR11 - Component evaluation:} The system shall support an ablation experiment to measure the effect of the minimum-resource quantification stage.
+\end{enumerate}
+\lipsum[34-36]
+
+\subsection{Non-Functional Requirements}
+\begin{enumerate}
+    \item \textbf{NFR1 - Prediction accuracy:} The prediction module should be evaluated using MAE and RMSE and compared with at least one simpler prediction baseline.
+    \item \textbf{NFR2 - SLA reliability:} The allocation policy shall be evaluated against a predefined SLA condition. The SLA formula and threshold shall be stated before the experiments; no universal violation threshold is assumed.
+    \item \textbf{NFR3 - Reproducibility:} Experiments shall use recorded configurations and fixed random seeds where applicable. Results should be reported across multiple runs.
+    \item \textbf{NFR4 - Scalability:} The framework should be evaluated with different workload sizes or trace subsets.
+    \item \textbf{NFR5 - Performance:} The reinforcement-learning decision process should not add unacceptable computational overhead to the simulation.
+    \item \textbf{NFR6 - Maintainability:} Workload preprocessing, prediction, minimum-resource quantification, reinforcement learning, and simulation should be implemented as separate modules.
+    \item \textbf{NFR7 - Extensibility:} The design should allow additional resource types to be considered in future work, although they are outside the current project scope.
+\end{enumerate}
+\lipsum[37-39]
+
+\subsection{System Requirements}
+\begin{enumerate}
+    \item \textbf{Dataset requirement:} The primary dataset shall be the Google Cluster Usage Trace. A secondary dataset may be used for validation if it is selected and made available within the project schedule.
+    \item \textbf{Hardware requirements:}
+    \begin{itemize}
+        \item A standard development computer capable of running Python and Java.
+        \item Sufficient memory and storage to process the selected workload trace and run CloudSim Plus experiments.
+        \item A dedicated GPU is not required for the core proof-of-concept, although it may speed up model training.
+    \end{itemize}
+    \item \textbf{Software requirements:}
+    \begin{itemize}
+        \item Python 3 for preprocessing, prediction, and reinforcement-learning components.
+        \item PyTorch or TensorFlow for LSTM or BiLSTM models.
+        \item Pandas and NumPy for data processing.
+        \item Scikit-learn for baseline models and evaluation metrics.
+        \item Java and CloudSim Plus for cloud simulation.
+        \item Git for version control and experiment tracking.
+    \end{itemize}
+\end{enumerate}
+\lipsum[40-41]
+
+\subsection{Design Constraints}
+\begin{itemize}
+    \item The system shall model and quantify CPU and memory only.
+    \item All allocation experiments shall be conducted in CloudSim Plus; deployment on a commercial cloud is outside the project scope.
+    \item The SLA condition and its threshold shall be defined as part of the experimental design.
+    \item The minimum-resource search shall initially use discrete candidate CPU and memory configurations to keep the search bounded and auditable.
+    \item The reinforcement-learning action space shall be limited to a manageable set of CPU and memory allocation choices.
+    \item The system shall not claim improved performance unless the results support that conclusion in the specified experiments.
+\end{itemize}
+\lipsum[42-43]
+
+\subsection{Acceptance Criteria}
+\begin{enumerate}
+    \item The system successfully loads the selected workload data.
+    \item Preprocessing produces valid CPU and memory sequences with missing values handled.
+    \item The prediction module produces both CPU and memory forecasts.
+    \item Prediction performance is measured using MAE and RMSE and compared with at least one baseline predictor.
+    \item The quantification module produces $(C_{min},M_{min})$ for a specified SLA condition.
+    \item Candidate allocations are classified as SLA-compliant or non-compliant using the defined SLA formulation.
+    \item The reinforcement-learning controller produces CPU and memory allocation actions.
+    \item The proposed allocation policy runs in CloudSim Plus.
+    \item The system records SLA violations, utilisation, wastage, cost, and execution or response time.
+    \item The proposed approach is compared with at least three baselines.
+    \item Results are repeated across multiple runs or seeds where applicable.
+    \item The evaluation determines whether the proposed method reduces unnecessary allocation while meeting the specified SLA condition.
+\end{enumerate}
+
+\section{Future Scope}
+Future work may evaluate the system using additional workload datasets, extend resource quantification to bandwidth or storage, or study deployment in a container-orchestration environment. These extensions are outside the present project scope.
+
+\chapter{Algorithm Analysis and Mathematical Modeling}
+\section{System Overview}
+The proposed system has four main stages: workload preprocessing, CPU and memory prediction, SLA-constrained minimum-resource quantification, and proactive allocation using reinforcement learning. The allocation policy is evaluated in CloudSim Plus.
+The overall process is:
+\begin{center}
+    Historical workload $\rightarrow$ preprocessing $\rightarrow$ CPU and memory prediction $\rightarrow$ minimum-resource quantification $\rightarrow$ RL-based allocation $\rightarrow$ evaluation in CloudSim Plus
+\end{center}
+At each prediction interval, the system uses historical workload observations to estimate future CPU and memory demand. The quantification module then searches for a feasible resource configuration that meets the defined SLA condition. The RL controller uses this configuration, along with the current simulation state, to select an allocation action. Simulation results provide feedback for evaluating the allocation policy.
+\lipsum[44-46]
+
+\section{Workload Data Preprocessing}
+\subsection{Workload Representation}
+Let the workload at time step $t$ be represented by:
+\begin{equation}
+x_{t} = \begin{bmatrix} x_{t}^{(CPU)} \\ x_{t}^{(MEM)} \end{bmatrix}
+\end{equation}
+where $x_{t}^{(CPU)}$ and $x_{t}^{(MEM)}$ are the observed CPU and memory demand, respectively.
+The workload trace is divided into time-ordered observations. Each observation is associated with a time step so the prediction model can learn changes in demand over time. The selected trace and its available fields determine the time interval and units used in the experiments.
+
+\subsection{Data Cleaning and Normalisation}
+Missing or invalid measurements shall be identified during preprocessing. Any removal or imputation of values shall be applied consistently and recorded as part of the experiment configuration.
+To place CPU and memory values on comparable scales, each feature may be normalised using min-max scaling:
+\begin{equation}
+x_{t}^{\prime} = \frac{x_{t} - x_{min}}{x_{max} - x_{min}}
+\end{equation}
+where $x_{min}$ and $x_{max}$ are calculated from the training data. The same training-set values shall be used to transform validation and test data to avoid information leakage.
+If the model output is normalised, predicted values shall be transformed back to the original resource units before minimum-resource quantification.
+
+\subsection{Time-Series Windowing}
+A sliding window of length $L$ is used to form an input sequence:
+\begin{equation}
+X_{t} = [x_{t-L+1}, x_{t-L+2}, \dots, x_{t}]
+\end{equation}
+The model uses this sequence to predict CPU and memory demand for a future horizon $H$:
+\begin{equation}
+\hat{Y}_{t} = [\hat{x}_{t+1}, \hat{x}_{t+2}, \dots, \hat{x}_{t+H}]
+\end{equation}
+The values of $L$ and $H$ shall be selected and reported as part of the experimental setup.
+\lipsum[47-49]
+
+\section{CPU and Memory Demand Prediction}
+\subsection{LSTM Model}
+An LSTM model is considered for predicting future CPU and memory demand from the historical sequence. At each time step, the LSTM updates its internal state using the current input and information retained from earlier time steps. This allows it to learn temporal patterns in the workload.
+The LSTM cell can be represented generally as:
+\begin{align}
+i_{t} &= \sigma(W_{i}x_{t} + U_{i}h_{t-1} + b_{i}) \\
+f_{t} &= \sigma(W_{f}x_{t} + U_{f}h_{t-1} + b_{f}) \\
+o_{t} &= \sigma(W_{o}x_{t} + U_{o}h_{t-1} + b_{o}) \\
+\tilde{c}_{t} &= \tanh(W_{c}x_{t} + U_{c}h_{t-1} + b_{c}) \\
+c_{t} &= f_{t} \odot c_{t-1} + i_{t} \odot \tilde{c}_{t} \\
+h_{t} &= o_{t} \odot \tanh(c_{t})
+\end{align}
+where $i_{t}$, $f_{t}$, and $o_{t}$ are the input, forget, and output gates; $c_{t}$ is the cell state; and $h_{t}$ is the hidden state.
+A prediction layer maps the final hidden representation to the CPU and memory forecasts:
+\begin{equation}
+\hat{x}_{t+1} = W_{y}h_{t} + b_{y} = \begin{bmatrix} \hat{x}_{t+1}^{(CPU)} \\ \hat{x}_{t+1}^{(MEM)} \end{bmatrix}
+\end{equation}
+
+\subsection{BiLSTM Model}
+A BiLSTM model may also be evaluated. It processes each input window in both the forward and reverse directions and combines the resulting hidden representations:
+\begin{equation}
+h = [\vec{h}, \overleftarrow{h}]
+\end{equation}
+The LSTM and BiLSTM models shall be compared using the same data split and evaluation metrics. The better-performing model may be selected for the downstream experiments based on validation data.
+\lipsum[50-52]
+
+\subsection{Prediction Evaluation}
+Prediction performance shall be measured separately for CPU and memory. For actual values $y_{i}$ and predictions $\hat{y}_{i}$ over $N$ observations, the mean absolute error (MAE) is:
+\begin{equation}
+MAE = \frac{1}{N} \sum_{i=1}^{N} |y_{i} - \hat{y}_{i}|
+\end{equation}
+The root mean squared error (RMSE) is:
+\begin{equation}
+RMSE = \sqrt{\frac{1}{N} \sum_{i=1}^{N} (y_{i} - \hat{y}_{i})^{2}}
+\end{equation}
+The prediction model shall also be compared with at least one simpler baseline, such as a moving-average predictor.
+
+\section{Resource Optimization Models}
+\subsection{Particle Swarm Optimization (PSO)}
+PSO is used in our system to find the optimal continuous allocation values for CPU and memory sizing. The algorithm updates the velocity and position of each "particle" (a candidate resource allocation) across iterations to find the global best configuration.
+The velocity update formula dictates how the particle changes its search direction based on its own past best and the swarm's overall best:
+\begin{equation}
+v_{i}^{t+1}=w v_{i}^{t}+c_{1}r_{1}(pbest_{i}-x_{i}^{t})+c_{2}r_{2}(gbest-x_{i}^{t})
+\end{equation}
+The position update formula calculates the new CPU/memory allocation for the next iteration:
+\begin{equation}
+x_{i}^{t+1}=x_{i}^{t}+v_{i}^{t+1}
+\end{equation}
+Where:
+\begin{itemize}
+    \item $v_{i}^{t}$ is the velocity of particle $i$ at iteration $t$.
+    \item $x_{i}^{t}$ is the current position (resource allocation) of particle $i$.
+    \item $w$ is the inertia weight, which balances global exploration and local exploitation.
+    \item $c_{1}$ and $c_{2}$ are the cognitive and social acceleration coefficients.
+    \item $r_{1}$ and $r_{2}$ are random numbers uniformly distributed in $[0, 1]$.
+    \item $pbest_{i}$ is the personal best position found by particle $i$ so far.
+    \item $gbest$ is the global best position found by the entire swarm.
+\end{itemize}
+\lipsum[53-56]
+
+\subsection{Ant Colony Optimization (ACO)}
+ACO is used in your system for discrete combinatorial optimization, specifically scheduling computational tasks to the best available Kubernetes worker nodes.
+The state transition rule (probability formula) determines the likelihood $P_{ij}^{k}$ of a task (ant $k$) being scheduled from current state $i$ to node $j$:
+\begin{equation}
+P_{ij}^{k}=\frac{[\tau_{ij}]^{\alpha}[\eta_{ij}]^{\beta}}{\sum_{l \in N_{i}^{k}} [\tau_{il}]^{\alpha}[\eta_{il}]^{\beta}}
+\end{equation}
+The pheromone update rule happens after a scheduling iteration to reinforce paths that resulted in optimal load balancing and energy efficiency:
+\begin{equation}
+\tau_{ij}^{t+1}=(1-\rho)\tau_{ij}^{t}+\Delta\tau_{ij}^{t}
+\end{equation}
+Where:
+\begin{itemize}
+    \item $\tau_{ij}$ is the amount of pheromone on the path to node $j$ (representing historical success of picking this node).
+    \item $\eta_{ij}$ is the heuristic information or visibility, often inversely proportional to the node's current CPU/RAM queue length or power consumption.
+    \item $\alpha$ and $\beta$ are parameters that control the relative weight of the pheromone trail versus heuristic visibility.
+    \item $N_{i}^{k}$ is the set of valid, available nodes that ant $k$ has not yet visited or overloaded.
+    \item $\rho$ is the pheromone evaporation rate ($0 < \rho \le 1$), preventing the algorithm from converging too fast on a suboptimal node.
+    \item $\Delta\tau_{ij}^{t}$ is the amount of pheromone deposited by ants that successfully scheduled tasks, typically proportional to the fitness of the allocation plan.
+\end{itemize}
+\lipsum[57-61]
+
+\section{SLA-Constrained Minimum-Resource Quantification}
+\subsection{Problem Formulation}
+Let $\hat{D}_{CPU}$ and $\hat{D}_{MEM}$ represent predicted CPU and memory demand for the selected future interval. Let $C$ and $M$ represent a candidate CPU and memory allocation.
+A candidate configuration is feasible when it satisfies the project's defined SLA condition:
+\begin{equation}
+SLA(C, M | \hat{D}_{CPU}, \hat{D}_{MEM}) \le \theta
+\end{equation}
+where $\theta$ is the SLA threshold selected for the experiment. The SLA function may use the performance measures chosen for the study, such as response time or a violation indicator. Its exact definition and threshold shall be stated before running the comparative experiments.
+Because CPU and memory can trade off against each other, the minimum pair shall be selected using an explicit resource objective. One possible formulation is:
+\begin{equation}
+(C_{min}, M_{min}) = \arg \min_{(C,M) \in A} (w_{C}C + w_{M}M)
+\end{equation}
+subject to:
+\begin{equation}
+SLA(C, M | \hat{D}_{CPU}, \hat{D}_{MEM}) \le \theta
+\end{equation}
+where $A$ is the set of candidate allocations and $w_{C}$ and $w_{M}$ are the relative CPU and memory cost weights. The weights shall be specified for the experiment. If measured allocation prices are available in the simulation, those prices may be used instead of abstract weights.
+This formulation selects the least-cost feasible pair from the candidate set. It avoids treating the CPU minimum and memory minimum as independent values when their combination may fail to meet the SLA.
+\lipsum[62-65]
+
+\subsection{Candidate Configuration Search}
+For the initial implementation, CPU and memory allocations shall be represented as discrete candidate values. The quantification module evaluates candidate pairs as follows:
+\begin{enumerate}
+    \item Generate the set of candidate CPU and memory allocations.
+    \item Evaluate each pair against the defined SLA condition for the predicted workload.
+    \item Exclude all pairs that do not meet the SLA condition.
+    \item Calculate the resource objective for each remaining pair.
+    \item Select the feasible pair with the lowest objective value.
+    \item Return $(C_{min}, M_{min})$ and the corresponding SLA evaluation.
+\end{enumerate}
+If no candidate pair satisfies the SLA, the module shall report that no feasible configuration was found within the candidate set. The candidate range can then be reviewed as part of the experiment setup.
+For $n_{C}$ CPU candidates and $n_{M}$ memory candidates, exhaustive evaluation checks $n_{C} n_{M}$ pairs. This bounded search is suitable for an initial implementation and produces an auditable result for each predicted workload.
+
+\section{Reinforcement-Learning-Based Proactive Allocation}
+\subsection{State Representation}
+At time step $t$, the RL controller observes a state that may include:
+\begin{equation}
+s_{t} = [\hat{D}_{CPU}, \hat{D}_{MEM}, C_{min}, M_{min}, C_{t}, M_{t}, u_{t}^{(CPU)}, u_{t}^{(MEM)}, q_{t}]
+\end{equation}
+where $C_{t}$ and $M_{t}$ are the current allocations, $u_{t}^{(CPU)}$ and $u_{t}^{(MEM)}$ are the observed utilisation values, and $q_{t}$ represents the current SLA status or relevant performance measurements.
+
+\subsection{Action Space}
+The action space contains a bounded set of CPU and memory allocation changes. An action may increase, decrease, or retain the current allocation for each resource. The action set shall be designed so that all resulting configurations remain within the simulation's defined capacity limits.
+The controller shall use the quantified minimum resources as guidance when selecting an action. The final allocation may include a safety margin if that margin is explicitly defined and evaluated.
+\lipsum[66-70]
+
+\subsection{Reward Function}
+The reward shall encourage SLA compliance and discourage unnecessary resource allocation. A general reward function is:
+\begin{equation}
+r_{t} = -\alpha V_{t} - \beta K_{t} - \gamma W_{t}
+\end{equation}
+where:
+\begin{itemize}
+    \item $V_{t}$ is the SLA violation penalty at time $t$,
+    \item $K_{t}$ is the resource allocation cost,
+    \item $W_{t}$ is the resource wastage measure, and
+    \item $\alpha$, $\beta$, and $\gamma$ are reward weights.
+\end{itemize}
+The weights shall be selected and reported as part of the experimental configuration. The violation penalty should make SLA failures sufficiently costly for the agent to learn to avoid them, while the cost and wastage terms encourage efficient allocation.
+
+\subsection{Learning Process}
+At each simulation step, the RL controller receives the current state, selects an allocation action, and applies that action in CloudSim Plus. The simulator returns updated utilisation, performance, cost, and SLA information. These observations are used to calculate the reward and update the controller's policy.
+DQN or PPO may be used as the learning algorithm. The chosen algorithm, state representation, action space, reward weights, training configuration, and random seeds shall be recorded so the experiments can be reproduced.
+\lipsum[71-75]
+
+\section{CloudSim Plus Simulation and Evaluation}
+The complete system shall be evaluated in CloudSim Plus. The simulation will use the selected workload trace and explicit CPU and memory utilisation models. The same workload, SLA definition, and simulation configuration shall be used when comparing the proposed method with the baselines.
+The evaluation shall record:
+\begin{itemize}
+    \item CPU and memory prediction error.
+    \item SLA violation rate or other selected SLA measures.
+    \item CPU and memory utilisation.
+    \item Resource wastage.
+    \item Simulated allocation cost.
+    \item Execution or response time.
+    \item Runtime or decision overhead where applicable.
+\end{itemize}
+The proposed method shall be compared with at least the following baselines:
+\begin{enumerate}
+    \item \textbf{Static allocation:} CPU and memory allocations remain fixed.
+    \item \textbf{Reactive threshold allocation:} allocation changes after observed utilisation crosses a predefined threshold.
+    \item \textbf{Prediction-only allocation:} predicted demand directly determines the allocation, without the minimum-resource quantification stage.
+    \item \textbf{Proposed method:} workload prediction followed by SLA-constrained minimum-resource quantification and RL-based proactive allocation.
+\end{enumerate}
+An ablation experiment shall compare the proposed method with a version that omits the quantification stage. This will help determine whether the explicit minimum-resource estimate contributes to the measured outcomes.
+
+\section{Summary}
+The proposed method connects workload forecasting to resource allocation through an explicit SLA-constrained quantification stage. LSTM or BiLSTM models estimate CPU and memory demand, a bounded search identifies a minimum-cost feasible configuration, and a reinforcement-learning controller uses that configuration to guide proactive allocation in CloudSim Plus. The effectiveness of the system will be determined through reproducible comparisons with the defined baselines and evaluation measures.
+
+\chapter{Detailed Design}
+\section{System Architecture}
+The proposed system consists of workload preprocessing, CPU and memory demand prediction, SLA-constrained minimum-resource quantification, reinforcement-learning-based allocation, and CloudSim Plus simulation. 
+\lipsum[76-80]
+
+\section{UML Diagrams}
+(Space reserved for Major 5 UML diagrams)
+\vspace{8cm} % Placeholder space
+\begin{figure}[h]
+    \centering
+    \caption{UML Diagram 1}
+\end{figure}
+\vspace{8cm}
+\begin{figure}[h]
+    \centering
+    \caption{UML Diagram 2}
+\end{figure}
+\vspace{8cm}
+\begin{figure}[h]
+    \centering
+    \caption{UML Diagram 3}
+\end{figure}
+\vspace{8cm}
+\begin{figure}[h]
+    \centering
+    \caption{UML Diagram 4}
+\end{figure}
+\vspace{8cm}
+\begin{figure}[h]
+    \centering
+    \caption{UML Diagram 5}
+\end{figure}
+\lipsum[81-85]
+
+\section{System Workflow}
+The workflow begins with historical workload data and proceeds through preprocessing, prediction, resource quantification, allocation, and simulation. The simulation results provide feedback to the reinforcement-learning controller.
+\lipsum[86-90]
+
+\chapter{Project Planning}
+\begin{itemize}
+    \item The project is planned over 16 weeks. Weeks 1-3 cover problem finalisation, the literature survey, and methodology. Weeks 4-6 are for requirements and the SRS, followed by dataset preparation in Week 7.
+    \item Weeks 8-10 cover CPU and memory prediction and the minimum-resource quantification method. Weeks 11-13 are for setting up CloudSim Plus, developing the RL controller, and integrating the system.
+    \item Weeks 14-15 are reserved for experiments, baseline comparisons, and result analysis. The final week is for completing the report, research paper, and presentation.
+    \item The project will use the Google Cluster Usage Trace, Python and its machine-learning libraries, Java, and CloudSim Plus. A standard development computer is sufficient; a dedicated GPU or paid cloud infrastructure is not required.
+    \item The system will be evaluated against static allocation, reactive threshold-based allocation, and prediction-only allocation. The evaluation will measure prediction error, SLA violations, resource utilisation, wastage, allocation cost, and execution or response time.
+\end{itemize}
+\lipsum[91-95]
+
+\chapter{Results and Implementation}
+
+\section{Implementation Screenshots}
+(Space reserved for Implementation screenshots 1.jpeg to 7.jpeg)
+\vspace{6cm}
+\begin{figure}[h]
+    \centering
+    \caption{Code Workspace Creation (Reference 1.jpeg)}
+\end{figure}
+\vspace{6cm}
+\begin{figure}[h]
+    \centering
+    \caption{Resource Optimizer Dashboard (Reference 2.jpeg)}
+\end{figure}
+\vspace{6cm}
+\begin{figure}[h]
+    \centering
+    \caption{IDE Environment (Reference 3.jpeg)}
+\end{figure}
+\vspace{6cm}
+\begin{figure}[h]
+    \centering
+    \caption{Machine Learning Optimizer View (Reference 4.jpeg)}
+\end{figure}
+\vspace{6cm}
+\begin{figure}[h]
+    \centering
+    \caption{Infrastructure Launch View (Reference 5.jpeg)}
+\end{figure}
+\vspace{6cm}
+\begin{figure}[h]
+    \centering
+    \caption{Room Management (Reference 6.jpeg)}
+\end{figure}
+\vspace{6cm}
+\begin{figure}[h]
+    \centering
+    \caption{Login Interface (Reference 7.jpeg)}
+\end{figure}
+\lipsum[96-105]
+
+\chapter{Conclusion}
+Cloud resource allocation must respond to changing workloads while balancing application performance with the cost of unused resources. Static and reactive approaches can struggle with unpredictable demand, while workload predictions alone do not directly identify the minimum allocation needed to satisfy an SLA.
+
+This project proposes a simulation-based system that predicts CPU and memory demand, quantifies a minimum feasible resource configuration under a defined SLA condition, and uses the result to guide proactive allocation through reinforcement learning. The system will be implemented and evaluated in CloudSim Plus using historical workload data.
+
+The evaluation will compare the proposed approach with static, reactive threshold-based, and prediction-only baselines. It will measure prediction error, SLA violations, resource utilisation, wastage, allocation cost, and execution or response time. An ablation experiment will also examine the effect of the minimum-resource quantification stage.
+
+The project does not assume in advance that the proposed method will outperform existing approaches. Its effectiveness will be established through the planned experiments. Future work may extend the system to additional resource types or validate it with other workload datasets, subject to time and data availability.
+\lipsum[106-115]
+
+\end{document}

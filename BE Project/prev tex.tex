@@ -1,0 +1,196 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{amsmath}
+\usepackage{lipsum}
+
+\title{Resource-Aware Collaborative Cloud IDE\\
+\large Bachelor of Engineering Project Report}
+\author{Abhay Joshi (7402) \\ Anish Kumar Pandey (7411) \\ Anish Kumar Pandey (7412) \\ Bikash Sharma (7418) \\ Army Institute of Technology, Pune}
+\date{Academic Year 2026-2027}
+
+\begin{document}
+
+\begin{titlepage}
+    \begin{center}
+        \vspace*{1cm}
+        
+        \Large
+        \textbf{Preliminary Project Report}
+        
+        \vspace{0.5cm}
+        \textbf{on}
+        \vspace{0.5cm}
+        
+        \huge
+        \textbf{Resource-Aware Collaborative Cloud IDE}
+        
+        \vspace{1.5cm}
+        
+        \normalsize
+        SUBMITTED TOWARDS THE \\
+        PARTIAL FULFILLMENT OF THE REQUIREMENTS OF \\
+        \textbf{Bachelor of Engineering (Computer Engineering)}
+        
+        \vspace{1.5cm}
+        
+        \textbf{BY} \\
+        \vspace{0.5cm}
+        Abhay Joshi | (7402) \\
+        Anish Kumar Pandey | (7411) \\
+        Anish Kumar Pandey | (7412) \\
+        Bikash Sharma | (7418) \\
+        
+        \vspace{1.5cm}
+        \textbf{Under the Guidance of} \\
+        Prof. Yogita Hambir
+        
+        \vfill
+        
+        \includegraphics[width=0.4\textwidth]{logo.png} \\ % Assuming a logo file exists or fallback to text
+        
+        \vspace{0.8cm}
+        \Large
+        Department of Computer Engineering \\
+        Army Institute of Technology, Pune 411015. \\
+        SAVITRIBAI PHULE PUNE UNIVERSITY \\
+        2026-27
+        
+    \end{center}
+\end{titlepage}
+
+\chapter*{Certificate}
+This is to certify that the Project Entitled \textbf{Resource-Aware Collaborative Cloud IDE} Submitted by Abhay Joshi (7402), Anish Kumar Pandey (7411), Anish Kumar Pandey (7412), and Bikash Sharma (7418) is a bonafide work carried out by students under the guidance of Prof. Yogita Hambir and is submitted as part of the Bachelor of Engineering (Computer Engineering) Project requirement.
+
+\vspace{2cm}
+\noindent
+Prof. Yogita Hambir \hfill Prof. (Dr.) Sunil Dhore \\
+Internal Guide \hfill H.O.D \\
+\vspace{2cm} \\
+External Examiner \hfill Dr. B P Patil \\
+\hfill Principal \\
+Place: AIT, Pune \\
+Date:
+
+\tableofcontents
+\listoffigures
+
+\chapter{Introduction}
+\section{Details of project work}
+Modern software development is rapidly shifting toward cloud-based environments, enabling remote access and collaboration. Existing collaborative IDE platforms face high latency, synchronization conflicts, and inefficient resource utilization, especially under dynamic multi-user workloads. This project proposes a collaborative cloud IDE that integrates real-time programming with intelligent resource management. By leveraging containerization and orchestration, the system aims to achieve scalability, efficiency, and optimized performance.
+
+\section{Objectives}
+The main objective is to maximize resource utilization while minimizing wastage and energy consumption in a cloud-based collaborative IDE.
+The project has the following specific objectives:
+\begin{enumerate}
+    \item Reduce latency issues during real-time code synchronization.
+    \item Simplify conflict handling complexity in multi-user editing.
+    \item Improve inefficient resource allocation to prevent wastage.
+    \item Implement adaptive scaling mechanisms.
+    \item Efficiently handle dynamic workloads and user spikes.
+\end{enumerate}
+
+\section{Scope Of The Project}
+The targeted scope of this project includes:
+\begin{itemize}
+    \item Real-time collaborative coding in the cloud using Docker for isolated environments and Kubernetes for scalability and load balancing.
+    \item Intelligent optimization (PSO, ACO, DVFS) to improve resource utilization and performance, enabling multiple users to work efficiently with low latency.
+    \item Ensuring reliability, scalability, and enhanced developer productivity, making it a modern and future-ready cloud IDE solution.
+\end{itemize}
+
+\section{Motivation of the project}
+Current collaborative IDEs lack integration between real-time collaboration and resource optimization. There is a limited use of intelligent scheduling algorithms in cloud IDEs, and inefficient handling of multi-user synchronization at scale. The absence of energy-aware and resource-aware execution models, combined with a dependency on static resource allocation strategies and limited automation in container lifecycle and workload management, motivates the development of a smarter, resource-aware system.
+
+\chapter{Literature Survey}
+\section{Adaptive Resource Allocation for Workflow Containerization on Kubernetes}
+Shan et al. (2023) explored a MAPE-K based adaptive resource allocation (ARAS) using a Kubernetes workflow engine and dynamic vertical scaling. The study identified gaps such as the lack of energy optimization, absence of intelligent optimization algorithms (ACO/PSO), lack of prediction capability, and high monitoring overhead.
+
+\section{A Hybrid Multi-Faceted Task Scheduling Algorithm for Cloud Computing Environment}
+Dubey \& Sharma (2023) proposed a hybrid metaheuristic combining PSO and ACO, simulated using CloudSim. The gaps identified include that it was not implemented in a Kubernetes/container environment, lacked real-time scaling, had no energy-aware optimization, and relied solely on simulation-based validation.
+
+\section{Adaptive Energy Optimization in Cloud Computing Through Containerization}
+Beena et al. (2025) discussed the integration of ACO, PSO and DVFS with Kubernetes, adaptive resource adjustment (ARAA), and automated lifecycle management (ARKLM). The identified gaps were the lack of ML-based prediction, limited proactive decision-making, absence of workload forecasting, and scope for improved intelligent adaptability.
+
+\section{Research Gap}
+The present study identifies the following gaps:
+\begin{itemize}
+    \item Lack of integration between real-time collaboration and resource optimization
+    \item Limited use of intelligent scheduling algorithms in cloud IDEs
+    \item Inefficient handling of multi-user synchronization at scale
+    \item Absence of energy-aware and resource-aware execution models
+    \item Dependency on static resource allocation strategies
+    \item Limited automation in container lifecycle and workload management
+\end{itemize}
+
+\chapter{Requirement Analysis}
+\section{Description and Functions of the Product}
+\subsection{Product Perspective}
+The system adopts an adaptive, optimization-driven resource utilization model to manage CPU resources (required for code execution, compilation, and processing), Memory (RAM) (used for runtime environments and active sessions), Storage (code files, logs, and container images), Network Bandwidth (real-time collaboration and data transfer), and Container Resources (isolated execution environments for each user).
+
+\subsection{Product Functions}
+The system will perform the following functions:
+\begin{enumerate}
+    \item \textbf{Developer Actions:} Authenticate (Login/OAuth), Create/Join Room, Clone Repository, Edit Code Collaboratively, View Presence \& Cursors, Run/Build Code, View Console Logs.
+    \item \textbf{Admin Actions:} Monitor Cluster Metrics, Configure Scaling Policies, View Energy Reports.
+    \item \textbf{System/Platform Functions:} Analyze Dependencies/Detect Stack, Resolve Conflicts (OT/CRDT), Generate Dockerfile/ImageSpec, Provision Container Pod, Auto-Scale Pods (HPA/ARAA), Optimize Resources (PSO/ACO), Apply DVFS Frequency Scaling, Reclaim Idle Sessions (ARKLM).
+\end{enumerate}
+
+\chapter{Algorithm Analysis and Mathematical Modeling}
+\section{System Overview}
+The system architecture involves several interacting components:
+\begin{itemize}
+    \item \textbf{Client (Browser IDE):} Handles user input, code editing (Monaco), and WebSocket communication.
+    \item \textbf{Collaboration Engine:} Manages Operational Transformation (OT) or CRDT sync and user presence.
+    \item \textbf{Provisioning (Repo Service \& K8s Manager):} Handles Git cloning, dependency scanning (ImageSpec generation), and pod provisioning.
+    \item \textbf{Optimization Core:} Executes scheduling and sizing heuristics (PSO/ACO) and manages energy (DVFS/ARKLM).
+\end{itemize}
+
+\section{Optimization Algorithms}
+The optimization engine utilizes several techniques to ensure balanced load distribution and reduced energy consumption.
+
+\subsection{Particle Swarm Optimization (PSO)}
+PSO is used to find the optimal allocation of CPU and memory.
+% [INSERT PSO/ACO IMPLEMENTATION HERE]
+
+\subsection{Ant Colony Optimization (ACO)}
+ACO is employed for efficient task scheduling across nodes.
+% [INSERT PSO/ACO IMPLEMENTATION HERE]
+
+\subsection{Dynamic Voltage and Frequency Scaling (DVFS)}
+DVFS adjusts CPU power based on the workload to save energy.
+
+\chapter{Detailed Design}
+\section{System Architecture}
+The system architecture is deployed on a Kubernetes cluster and involves several namespaces and layers:
+\begin{itemize}
+    \item \textbf{Client Layer:} Web IDE (React + Monaco Editor + xterm.js terminal) and Yjs client (CRDT).
+    \item \textbf{Edge Layer:} NGINX Ingress (TLS termination, HTTPS/WSS) and Cloud Load Balancer.
+    \item \textbf{Platform Layer:} Auth Service (OAuth2/JWT), Collaboration Server (Node.js + y-websocket), Workspace Manager API, and Git Service (Gitea).
+    \item \textbf{Data Layer:} Redis (pub/sub, presence), PostgreSQL (users, projects), and Persistent Volume/MinIO (code, logs, images).
+    \item \textbf{Optimizer Layer:} Metrics Collector (PromQL), Workload \& Resource Estimator, PSO, ACO, DVFS, and Decision Engine.
+    \item \textbf{Workspace Layer:} Worker pods (Docker containers running language runtimes + LSP) managed by the K8s API Server and HPA/VPA.
+    \item \textbf{Monitoring Layer:} Prometheus (cAdvisor + metrics-server), Grafana, ARAA controller, and ARKLM controller.
+\end{itemize}
+
+\section{System Workflow}
+The workflow is as follows:
+\begin{enumerate}
+    \item HTTPS/WSS traffic from the browser is routed via Ingress.
+    \item Requests are authenticated and directed to the Collaboration Server or Workspace API.
+    \item CRDT updates flow through the Collaboration Server using Redis pub/sub.
+    \item The Workspace Manager requests the K8s API to create user pods based on the execution profile (ImageSpec).
+    \item Pod metrics are scraped by Prometheus and collected by the Metrics Collector.
+    \item The Decision Engine (utilizing PSO/ACO/DVFS) patches requests/limits and node placement, and sets CPU frequency.
+    \item ARAA and ARKLM controllers provide closed-loop feedback for adaptive scaling and lifecycle management.
+\end{enumerate}
+
+\chapter{Results and Evaluation}
+% [INSERT RESULTS AND EVALUATION HERE]
+
+\chapter{Conclusion}
+Real-time collaborative coding in the cloud using Docker for isolated environments and Kubernetes for scalability and load balancing presents a robust solution. Intelligent optimization through PSO, ACO, and DVFS significantly improves resource utilization and performance, enabling multiple users to work efficiently with low latency. This system ensures reliability, scalability, and enhanced developer productivity, making it a modern and future-ready cloud IDE solution.
+
+\end{document}
